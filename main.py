@@ -5,10 +5,11 @@ height = 600
 width = 800
 screen = pygame.display.set_mode((width, height))
 pygame.display.set_caption("Pac Man")
-black = pygame.Color(0,0,0)
+darkblue = pygame.Color(0,0,139)
 running = True
 clock = pygame.time.Clock()
-
+black_color = [0,0,0]
+food = pygame.transform.scale(pygame.image.load("food.png"), (10,10))
 player = Player()
 
 #wall = 0
@@ -19,28 +20,34 @@ def draw_grid(screen):
 	for i in range(12):
 
 		for j in range(16):
-			pygame.draw.rect()
+			if map_grid[i][j] == 0:
+				pygame.draw.rect(screen,black_color,(j*50,i*50,50,50))
+			if map_grid[i][j] == 1:
+				screen.blit(food,(j*50+20,i*50+20))
 
 map_grid = [
     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
     [0, 1, 1, 1, 1, 1, 1, 0, 0, 1, 1, 1, 1, 1, 1, 0],
     [0, 1, 0, 0, 1, 0, 1, 0, 0, 1, 0, 1, 0, 0, 1, 0],
     [0, 1, 0, 0, 1, 0, 1, 1, 1, 1, 0, 1, 0, 0, 1, 0],
-    [2, 1, 1, 1, 1, 1, 0, 0, 0, 0, 1, 1, 1, 1, 1, 2],
-    [0, 1, 0, 0, 0, 1, 0, 9, 9, 0, 1, 0, 0, 0, 1, 0],
+    [2, 1, 1, 1, 1, 1, 0, 2, 2, 0, 1, 1, 1, 1, 1, 2],
+    [0, 1, 0, 0, 0, 1, 0, 2, 2, 0, 1, 0, 0, 0, 1, 0],
     [0, 1, 1, 1, 0, 1, 0, 2, 2, 0, 1, 0, 1, 1, 1, 0],
     [2, 1, 0, 1, 0, 1, 0, 0, 0, 0, 1, 0, 1, 0, 1, 2],
-    [0, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 0],
+    [0, 1, 0, 1, 1, 1, 1, 2, 2, 1, 1, 1, 1, 0, 1, 0],
     [0, 1, 0, 0, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0, 1, 0],
     [0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0],
     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
 ]
 
 
+
+
 while running:
-	screen.fill(black)
+	screen.fill(darkblue)
 	player.draw(screen)
 	player.move()
+	draw_grid(screen)
 	for event in pygame.event.get():
 		if event.type == pygame.QUIT:
 			running = False

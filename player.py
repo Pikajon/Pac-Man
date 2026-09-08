@@ -2,7 +2,7 @@ import pygame
 class Player:
 	def __init__(self):
 		self.size = None
-		self.y = 250
+		self.y = 400
 		self.x = 350
 		self.speed = None
 		self.image = pygame.transform.scale(pygame.image.load("pacman.png"), (50,50))
