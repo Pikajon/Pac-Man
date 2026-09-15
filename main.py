@@ -40,8 +40,8 @@ map_grid = [
     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
 ]
 
-
-
+def collision_check():
+	return
 
 while running:
 	screen.fill(darkblue)
@@ -56,6 +56,7 @@ while running:
 			player.handle_input(event.key)
 
 	pygame.display.update()
-	clock.tick(10)
+	clock.tick(45)
 pygame.quit()
+
 

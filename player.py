@@ -35,8 +35,8 @@ class Player:
 
 	def move(self):
 		if self.x % 50 == 0 and self.y % 50 == 0:
-			self.x_change += self.next_x_change
-			self.y_change += self.next_y_change
+			self.x_change = self.next_x_change
+			self.y_change = self.next_y_change
 
 		self.x += self.x_change
 		self.y += self.y_change
@@ -45,6 +45,8 @@ class Player:
 
 	def move_pacman(self):
 		self.move_pending += 10
+
+
 
 
 
