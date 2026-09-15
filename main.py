@@ -47,6 +47,7 @@ while running:
 	screen.fill(darkblue)
 	player.draw(screen)
 	player.move()
+	player.move_pacman()
 	draw_grid(screen)
 	for event in pygame.event.get():
 		if event.type == pygame.QUIT:
@@ -55,6 +56,6 @@ while running:
 			player.handle_input(event.key)
 
 	pygame.display.update()
-	clock.tick(60)
+	clock.tick(10)
 pygame.quit()
 
