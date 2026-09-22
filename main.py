@@ -40,8 +40,23 @@ map_grid = [
     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
 ]
 
-def collision_check():
-	return
+def collision_check(next_x, next_y):
+	i = next_y // 50
+	j = next_x // 50
+	if map_grid[i][j] == 0:
+		return True
+	else:
+		return False
+
+def eat_food(x, y):
+	if x % 50 == 0 and y % 50 == 0:
+		i = int(x / 50)
+		j = int(y / 50)
+		if map_grid[i][j] == 1:
+			map_grid[i][j] = 2
+
+
+
 
 while running:
 	screen.fill(darkblue)
@@ -49,6 +64,10 @@ while running:
 	player.move()
 	player.move_pacman()
 	draw_grid(screen)
+	eat_food(player.x,player.y)
+	if collision_check(player.next_x,player.next_y) == True:
+		player.next_x_change = 0
+		player.next_y_change = 0
 	for event in pygame.event.get():
 		if event.type == pygame.QUIT:
 			running = False

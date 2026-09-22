@@ -11,6 +11,8 @@ class Player:
 		self.next_y_change = 0
 		self.next_x_change = 0
 		self.move_pending = 0
+		self.next_x = 0
+		self.next_y = 0
 
 	def draw(self, screen):
 		screen.blit(self.image,(self.x, self.y))
@@ -40,6 +42,8 @@ class Player:
 
 		self.x += self.x_change
 		self.y += self.y_change
+		self.next_x = self.x + self.next_x_change
+		self.next_y = self.y + self.next_y_change
 		if self.move_pending > 0:
 			self.move_pending -= 1
 
