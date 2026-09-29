@@ -30,49 +30,71 @@ map_grid = [
     [0, 1, 1, 1, 1, 1, 1, 0, 0, 1, 1, 1, 1, 1, 1, 0],
     [0, 1, 0, 0, 1, 0, 1, 0, 0, 1, 0, 1, 0, 0, 1, 0],
     [0, 1, 0, 0, 1, 0, 1, 1, 1, 1, 0, 1, 0, 0, 1, 0],
-    [2, 1, 1, 1, 1, 1, 0, 2, 2, 0, 1, 1, 1, 1, 1, 2],
+    [3, 1, 1, 1, 1, 1, 0, 2, 2, 0, 1, 1, 1, 1, 1, 3],
     [0, 1, 0, 0, 0, 1, 0, 2, 2, 0, 1, 0, 0, 0, 1, 0],
     [0, 1, 1, 1, 0, 1, 0, 2, 2, 0, 1, 0, 1, 1, 1, 0],
-    [2, 1, 0, 1, 0, 1, 0, 0, 0, 0, 1, 0, 1, 0, 1, 2],
+    [3, 1, 0, 1, 0, 1, 0, 0, 0, 0, 1, 0, 1, 0, 1, 3],
     [0, 1, 0, 1, 1, 1, 1, 2, 2, 1, 1, 1, 1, 0, 1, 0],
     [0, 1, 0, 0, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0, 1, 0],
     [0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0],
     [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
 ]
 
-def collision_check(next_x, next_y):
-	i = next_y // 50
-	j = next_x // 50
-	if map_grid[i][j] == 0:
-		return True
-	else:
-		return False
+def collision_check(x,y, x_change, y_change):
+	next_x = x + x_change
+	next_y = y + y_change
+
+	if x_change > 0: next_x += 49
+	if y_change > 0: next_y += 49
+
+	i = int(next_y // 50)
+	j = int(next_x // 50)
+
+	if 0 <= i < 12 and 0 <= j < 16:
+		return map_grid[i][j] == 0
+	return False
 
 def eat_food(x, y):
 	if x % 50 == 0 and y % 50 == 0:
-		i = int(x / 50)
-		j = int(y / 50)
+		i = int(y / 50)
+		j = int(x / 50)
 		if map_grid[i][j] == 1:
 			map_grid[i][j] = 2
 
+def pass_wall(x, y):
+	if x == 0 and y == 200:
+		player.x = 800
+	elif x == 0 and y == 350:
+		player.x = 800
+	elif x == 750 and y == 200:
+		player.x = 0
+	elif x == 750 and y == 350:
+		player.x = 0
 
 
 
 while running:
+	for event in pygame.event.get():
+		if event.type == pygame.QUIT:
+			running = False
+		if event.type == pygame.KEYDOWN:
+			player.handle_input(event.key)
+
+	if collision_check(player.x,player.y,player.x_change,player.y_change):
+		player.x_change = 0
+		player.y_change = 0
+	if player.x % 50 == 0 and player.y % 50 == 0:
+		if collision_check(player.x,player.y,player.next_x_change,player.next_y_change):
+			player.next_x_change = 0
+			player.next_y_change = 0
+
+	pass_wall(player.x,player.y)
 	screen.fill(darkblue)
 	player.draw(screen)
 	player.move()
 	player.move_pacman()
 	draw_grid(screen)
 	eat_food(player.x,player.y)
-	if collision_check(player.next_x,player.next_y) == True:
-		player.next_x_change = 0
-		player.next_y_change = 0
-	for event in pygame.event.get():
-		if event.type == pygame.QUIT:
-			running = False
-		if event.type == pygame.KEYDOWN:
-			player.handle_input(event.key)
 
 	pygame.display.update()
 	clock.tick(45)
